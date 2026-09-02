@@ -4,20 +4,22 @@ local SoundHelpers = require "/SimobiSirOP/Helpers/SoundHelpers"
 
 S_MediaPlayer = {}
 
-local CurrentChannels = {}
+--- Current MediaPlayer channels
+---@type table
+S_MediaPlayer.CurrentChannels = {}
 
 local function GetChannel(i)
-    if not CurrentChannels[i] then return nil end
+    if not S_MediaPlayer.CurrentChannels[i] then return nil end
 
-    if SoundHelpers.IsChannelDisposed(CurrentChannels[i]) then
-        table.remove(CurrentChannels, i)
+    if SoundHelpers.IsChannelDisposed(S_MediaPlayer.CurrentChannels[i]) then
+        table.remove(S_MediaPlayer.CurrentChannels, i)
         return nil
     end
 
-    return CurrentChannels[i]
+    return S_MediaPlayer.CurrentChannels[i]
 end
 
-
+-- Caching links so we won't have to download it everytime
 local SavedLinksCache = {}
 local currentCounter = 0;
 
@@ -25,9 +27,15 @@ local function GetGain()
     return S_ClientGlobals.Settings.SMusicPlayerVolume.value / 100
 end
 
-LuaUserData.RegisterType("NVorbis.VorbisReader")
-LuaUserData.MakeFieldAccessible(Descriptors["Barotrauma.Sounds.OggSound"], "streamReader")
+if (CSActive) then 
+    LuaUserData.RegisterType("NVorbis.VorbisReader")
+    LuaUserData.MakeFieldAccessible(Descriptors["Barotrauma.Sounds.OggSound"], "streamReader")
+end
+
 local function extractSoundData(sound)
+
+    if not CSActive then error("Trying to execute a non-sandboxed method in sandboxed environment") end
+
     local data = {}
     local comments = sound.streamReader.Comments
 
@@ -43,7 +51,7 @@ local function extractSoundData(sound)
     return data
 end
 
--- Displaying title
+
 
 local function DisplaySoundTitle(sound)
     local soundData = extractSoundData(sound)
@@ -64,7 +72,7 @@ local function DisplaySoundTitle(sound)
 
     -- Putting above the hud if there is a character for inventory (So it will look better)
     if Character.Controlled and Character.Controlled.Inventory and Character.Controlled.Inventory.visualSlots[1] then
-        local slot = Character.Controlled.Inventory.visualSlots[1]
+        local slot = Character.Controlled.Inventory.visualSlots[1] -- Relative to 
         label.RectTransform.AbsoluteOffset = Point(
             slot.Rect.Center.X - label.Rect.Width/2,
             slot.Rect.Height + 70
@@ -112,8 +120,10 @@ local function PlayFile(fileName, position)
 
 
     if (success) then
-        pcall(DisplaySoundTitle, sound)
-        table.insert(CurrentChannels, result)
+        if CSActive then 
+            pcall(DisplaySoundTitle, sound)
+        end
+        table.insert(S_MediaPlayer.CurrentChannels, result)
         return result
     else
         Logger.LogError(result)
@@ -161,12 +171,12 @@ end
 
 function S_MediaPlayer.PlayLink(url, position)
     local maxChannels = S_ClientGlobals.Settings.SMusicPlayerLimit.value;
-    if (maxChannels <= #CurrentChannels) then
+    if (maxChannels <= #S_MediaPlayer.CurrentChannels) then
         if (maxChannels <= 0) then
             return
         end
 
-        table.remove(CurrentChannels, 1)
+        table.remove(S_MediaPlayer.CurrentChannels, 1)
     end
 
 
@@ -187,31 +197,55 @@ function S_MediaPlayer.PlayLink(url, position)
     end
 end
 
--- So will sounds will end during round end
 
+
+--- Stops all channels (Results in stopping all music, even looping one)
 function S_MediaPlayer.StopAllChannels()
-    for _, channel in ipairs(CurrentChannels) do
+    for _, channel in ipairs(S_MediaPlayer.CurrentChannels) do
         channel.FadeOutAndDispose()
     end
-    CurrentChannels = {}
+    S_MediaPlayer.CurrentChannels = {}
 end
 
+--- Stops specific channel if it exists in MediaPlayer.S_MediaPlayer.CurrentChannels
 function S_MediaPlayer.StopChannel(channel)
-    for i, ch in ipairs(CurrentChannels) do
+    for i, ch in ipairs(S_MediaPlayer.CurrentChannels) do
         if (ch.ALSourceIndex == channel.ALSourceIndex) then
-            table.remove(CurrentChannels, i)
+            table.remove(S_MediaPlayer.CurrentChannels, i)
             return
         end
     end
     channel.FadeOutAndDispose()
 end
 
+--- Restarts all channels
+---@return NewChannels table New channels of restarted music
+function S_MediaPlayer.RestartAllChannels()
+    local NewChannels = {}
+    for i,ch in pairs(S_MediaPlayer.CurrentChannels) do
+        local sound = ch.Sound
+        local position = ch.Position
+        ch.FadeOutAndDispose()
+
+        local newCh
+        if ch.Position then
+            newCh = SoundPlayer.PlaySound(sound, position, GetGain(), 1500, nil, nil, false, true)
+        else
+            newCh = sound.Play(GetGain())
+        end
+        table.insert(NewChannels, newCh)
+    end
+    S_MediaPlayer.CurrentChannels = NewChannels
+    return S_MediaPlayer.CurrentChannels
+end
+
 -- Settings change
 
--- In percentage
-local function ChangeVolume(value)
-    local gainValue = value / 100
-    for _, channel in ipairs(CurrentChannels) do
+--- Changes volume of all channels
+---@param volume int (volume)
+local function ChangeVolume(volume)
+    local gainValue = volume
+    for _, channel in ipairs(S_MediaPlayer.CurrentChannels) do
         channel.gain = gainValue
     end
 end
@@ -222,11 +256,11 @@ end
 S_ClientGlobals.Settings.SMusicPlayerVolume.OnValueChanged.add(OnMusicPlayerVolumeChange)
 
 local function OnMusicPlayerLimitChange(cfg)
-    if (#CurrentChannels > cfg.value) then
-        local toRemove = #CurrentChannels - cfg.value
+    if (#S_MediaPlayer.CurrentChannels > cfg.value) then
+        local toRemove = #S_MediaPlayer.CurrentChannels - cfg.value
         for i = 1, toRemove, 1 do
-            CurrentChannels[1].FadeOutAndDispose()
-            table.remove(CurrentChannels, 1)
+            S_MediaPlayer.CurrentChannels[1].FadeOutAndDispose()
+            table.remove(S_MediaPlayer.CurrentChannels, 1)
         end
     end
 end
