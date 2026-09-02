@@ -16,8 +16,6 @@
 			"deprecated",
 		],
 	"Lua.workspace.library": [
-		"C:/Users/Ilya/VsCodeHelpers/types/types/client",
-		"C:/Users/Ilya/VsCodeHelpers/types/types/shared",
-		"C:/Users/Ilya/VsCodeHelpers/types/types/server"
+		"${workspaceFolder}/TypeChecking"
 	]
 }

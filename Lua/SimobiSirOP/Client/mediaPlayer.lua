@@ -1,5 +1,14 @@
 if SERVER then return end
 
+-- TODO Add albums that can be shared with Loading.
+-- TODO Split Media player to multiple files
+-- TODO Add better channel management
+
+
+if not (File.DirectoryExists(S_MPGlobals.MediaPath)) then
+    File.CreateDirectory(S_MPGlobals.MediaPath)
+end
+
 local SoundHelpers = require "/SimobiSirOP/Helpers/SoundHelpers"
 
 S_MediaPlayer = {}
