@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<ModConfig>
+    <Config File="%ModDir%/Config/SettingsClient.xml" Target="Client" />
+    <Lua File="%ModDir%/Lua/Autorun/start.lua"  IsAutorun="true" RunUnrestricted="true">
+    </Lua>
+</ModConfig>

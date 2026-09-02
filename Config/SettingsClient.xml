@@ -1,0 +1,6 @@
+<Configuration>
+    <Settings>
+        <Setting Name="SMusicPlayerVolume" Type="rangeInt" Value="100" Min="0" Max="200" Steps="200"/>
+        <Setting Name="SMusicPlayerLimit" Type="rangeInt" Value="5" Min="0" Max="50" Steps="50"/>
+    </Settings>
+</Configuration>

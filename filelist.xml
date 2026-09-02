@@ -1,0 +1,5 @@
+<contentpackage name="SimobiSirOP Media Player">
+    <!-- Localization -->
+    <Text file="%ModDir%/Texts/English.xml"/>
+    <Text file="%ModDir%/Texts/Russian.xml"/>
+</contentpackage>

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!-- XMLSAFe - SimobiSirOP_x0020_Media_x0020_Player -->
+
+<infotexts language="Russian" nowhitespace="false" translatedname="Русский">
+    <!-- Settings -->
+    <!-- SMusicPlayerVolume -->
+    <SimobiSirOP_x0020_Media_x0020_Player.SMusicPlayerVolume.DisplayName>Громкость проигрывателя Simobi</SimobiSirOP_x0020_Media_x0020_Player.SMusicPlayerVolume.DisplayName>
+    <SimobiSirOP_x0020_Media_x0020_Player.SMusicPlayerVolume.DisplayCategory>SimobiSirOP Media Player</SimobiSirOP_x0020_Media_x0020_Player.SMusicPlayerVolume.DisplayCategory>
+    
+    <!-- SMusicPlayerLimit -->
+    <SimobiSirOP_x0020_Media_x0020_Player.SMusicPlayerLimit.DisplayName>Допустимое количество каналов</SimobiSirOP_x0020_Media_x0020_Player.SMusicPlayerLimit.DisplayName>
+    <SimobiSirOP_x0020_Media_x0020_Player.SMusicPlayerLimit.DisplayCategory>SimobiSirOP Media Player</SimobiSirOP_x0020_Media_x0020_Player.SMusicPlayerLimit.DisplayCategory>
+
+    <!-- Media Player Info Text -->
+    <SimobiSirOP_MP.MediaPlayer.ScreenDisplayText>Сейчас играет: %s</SimobiSirOP_MP.MediaPlayer.ScreenDisplayText>
+
+
+</infotexts>

@@ -1,0 +1,23 @@
+{
+	"Lua.diagnostics.libraryFiles": "Enable",
+
+	"Lua.diagnostics.disable": [
+			"param-type-mismatch",
+			"return-type-mismatch",
+			"undefined-field",
+			"need-check-nil",
+			"assign-type-mismatch",
+			"redundant-return-value",
+			"missing-parameter",
+			"missing-return-value",
+			"undefined-doc-name",
+			"missing-return",
+			"cast-local-type",
+			"deprecated",
+		],
+	"Lua.workspace.library": [
+		"C:/Users/Ilya/VsCodeHelpers/types/types/client",
+		"C:/Users/Ilya/VsCodeHelpers/types/types/shared",
+		"C:/Users/Ilya/VsCodeHelpers/types/types/server"
+	]
+}

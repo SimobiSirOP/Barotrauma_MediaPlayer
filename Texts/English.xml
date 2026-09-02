@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!-- XMLSAFe - SimobiSirOP_x0020_Media_x0020_Player -->
+
+<infotexts language="English" nowhitespace="false" translatedname="English">
+    <!-- Settings -->
+    <!-- SMusicPlayerVolume -->
+    <SimobiSirOP_x0020_Media_x0020_Player.SMusicPlayerVolume.DisplayName>Simobi's Media Player Volume</SimobiSirOP_x0020_Media_x0020_Player.SMusicPlayerVolume.DisplayName>
+    <SimobiSirOP_x0020_Media_x0020_Player.SMusicPlayerVolume.DisplayCategory>Simobi's Media Player</SimobiSirOP_x0020_Media_x0020_Player.SMusicPlayerVolume.DisplayCategory>
+    
+    <!-- SMusicPlayerLimit -->
+    <SimobiSirOP_x0020_Media_x0020_Player.SMusicPlayerLimit.DisplayName>Simobi's Media Player Concurrent Channels</SimobiSirOP_x0020_Media_x0020_Player.SMusicPlayerLimit.DisplayName>
+    <SimobiSirOP_x0020_Media_x0020_Player.SMusicPlayerLimit.DisplayCategory>Simobi's Media Player</SimobiSirOP_x0020_Media_x0020_Player.SMusicPlayerLimit.DisplayCategory>
+
+    <!-- Media Player Info Text -->
+    <SimobiSirOP_MP.MediaPlayer.ScreenDisplayText>Currently Playing: %s</SimobiSirOP_MP.MediaPlayer.ScreenDisplayText>
+
+</infotexts>
